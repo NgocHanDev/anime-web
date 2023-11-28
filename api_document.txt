@@ -1,0 +1,7 @@
+Anime: 
+	-Method GET:
+		- .../anime/{id} : lấy anime theo id (404 nếu không tìm thấy)
+		- .../anime?sort={value},desc&page={n}&size={m}: xắp xếp theo 1 giá trị nào đó, và phân trang 
+		Tìm kiếm: 
+		- .../anime/search/findAllByNameContains?name={value}: tìm kiếm tất cả aninme có tên chưa kí tự {value}
+		- .../anime/search/findAllByCategoryList_categoryName?theLoai={value}: tìm anime theo thể loại
