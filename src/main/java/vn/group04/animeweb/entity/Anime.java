@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "anime")
+@Table(name = "animes")
 public class Anime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Anime {
     private int view;
     @Column(name = "description")
     private String description;
-    @Column(name = "cover_image", columnDefinition =  "LONGTEXT")
+    @Column(name = "cover_image", columnDefinition =  "TEXT")
     @Lob
     private String coverImage;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "anime")
