@@ -12,7 +12,8 @@ import java.util.List;
 public interface AnimeRepository extends JpaRepository<Anime, Integer> {
     public Anime findByName(String name);
     public Anime findById(int id);
-    public Page<Anime> findAllByNameContains(String name, Pageable pageable);
+    public Page<Anime> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+    public Page<Anime> findAllByNameContainingIgnoreCaseOrEnglishNameContainingIgnoreCaseOrVietnamNameContainsIgnoreCase(String name, String englishName, String vietnamName, Pageable pageable);
     public Page<Anime> findAllByCategoryList_categoryName(String theLoai, Pageable pageable);
 
 }

@@ -18,7 +18,10 @@ public class User {
     private String password;
     @Column(name = "email")
     private String email;
-
+    @Column(name = "full_name")
+    private String fullName;
+    @Column(name = "avatar", columnDefinition = "TEXT")
+    private String avatar;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Comment> commentList;
 

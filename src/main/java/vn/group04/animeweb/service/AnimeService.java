@@ -1,11 +1,12 @@
 package vn.group04.animeweb.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import vn.group04.animeweb.entity.Anime;
 import vn.group04.animeweb.repository.AnimeRepository;
+
+import java.util.Base64;
 
 @Service
 public class AnimeService {
@@ -24,4 +25,5 @@ public class AnimeService {
             return ResponseEntity.ok(String.format("Xoá thành công %d !!!", anime.getId()));
         }
     }
+
 }
