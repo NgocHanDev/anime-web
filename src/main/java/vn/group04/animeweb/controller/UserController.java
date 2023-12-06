@@ -11,6 +11,7 @@ import vn.group04.animeweb.service.TaiKhoanService;
 import vn.group04.animeweb.service.UserService;
 
 @RestController()
+@CrossOrigin("*")
 @RequestMapping("/user")
 public class UserController {
     private TaiKhoanService taiKhoanService;

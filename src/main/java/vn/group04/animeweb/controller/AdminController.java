@@ -8,6 +8,7 @@ import vn.group04.animeweb.service.UserService;
 
 @RestController()
 @RequestMapping("/admin")
+@CrossOrigin("*")
 public class AdminController {
     private UserService userService;
     private AnimeService animeService;
