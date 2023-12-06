@@ -49,7 +49,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, Enpoints.ADMIN_ENPOINTS).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, Enpoints.ADMIN_ENPOINTS).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Enpoints.ADMIN_ENPOINTS).hasAuthority("ADMIN")
-                        .anyRequest().permitAll()
         );
 
         httpSecurity.cors(httpSecurityCorsConfigurer ->httpSecurityCorsConfigurer.configurationSource(
