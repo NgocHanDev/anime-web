@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import vn.group04.animeweb.entity.User;
 
 import java.security.Key;
 import java.util.Date;
@@ -57,13 +58,13 @@ public class JwtService {
         byte[] bytesKey = Decoders.BASE64.decode(KEY_SECRET);
         return Keys.hmacShaKeyFor(bytesKey);
     }
-    public String generateToken(UserDetails userDetails){
-
-
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User user){
+        return generateToken(new HashMap<>(), user);
     }
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
-        UserDetails nguoiDung = userService.loadUserByUsername(userDetails.getUsername());
+    public String generateToken(Map<String, Object> extraClaims, User user){
+        UserDetails nguoiDung = userService.loadUserByUsername(user.getUserName());
+        extraClaims.put("isUser", true);
+        if(nguoiDung !=null) extraClaims.put("id", user.getId());
         if(nguoiDung != null && !nguoiDung.getAuthorities().isEmpty()){
             List<? extends GrantedAuthority> list  = nguoiDung.getAuthorities().stream().toList();
             for(var grantedAuthority:list){
@@ -71,10 +72,11 @@ public class JwtService {
                     extraClaims.put("isAdmin", true);
                 }
             }
+
         }
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(nguoiDung.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*24 ))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

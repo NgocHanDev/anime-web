@@ -10,15 +10,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.group04.animeweb.entity.FavoriteAnime;
+import vn.group04.animeweb.entity.Role;
 import vn.group04.animeweb.entity.User;
 import vn.group04.animeweb.repository.FavoriteAnimeRepository;
+import vn.group04.animeweb.repository.RoleRepository;
 import vn.group04.animeweb.repository.UserRepository;
 import vn.group04.animeweb.request.UserChangePassword;
 import vn.group04.animeweb.response.MyResponse;
 import vn.group04.animeweb.security.login.RequestLogin;
 import vn.group04.animeweb.security.login.ResponseLogin;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -30,10 +34,11 @@ public class TaiKhoanService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final FavoriteAnimeRepository favoriteAnimeRepository;
+    private final RoleRepository roleRepository;
 
 
     @Autowired
-    public TaiKhoanService(EmailService emailService, UserRepository userRepository,BCryptPasswordEncoder passwordEncoder, JwtService jwtService, UserService userService, AuthenticationManager authenticationManager,FavoriteAnimeRepository favoriteAnimeRepository){
+    public TaiKhoanService(RoleRepository roleRepository,EmailService emailService, UserRepository userRepository,BCryptPasswordEncoder passwordEncoder, JwtService jwtService, UserService userService, AuthenticationManager authenticationManager,FavoriteAnimeRepository favoriteAnimeRepository){
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.userService = userService;
@@ -41,6 +46,7 @@ public class TaiKhoanService {
         this.emailService = emailService;
         this.authenticationManager = authenticationManager;
         this.favoriteAnimeRepository = favoriteAnimeRepository;
+        this.roleRepository = roleRepository;
 
     }
     public ResponseEntity<?> dangNhap(RequestLogin request) {
@@ -48,7 +54,7 @@ public class TaiKhoanService {
             try {
                 Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()));
                 if (auth.isAuthenticated()) {
-                    String token = jwtService.generateToken(userService.loadUserByUsername(request.getUserName()));
+                    String token = jwtService.generateToken(userRepository.findByUserName(request.getUserName()));
 
                     ResponseLogin response = new ResponseLogin();
                     response.setToken(token);
@@ -81,6 +87,7 @@ public class TaiKhoanService {
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
 
+      user.setAvatar("");
         //lưu người dùng vào hệ thống
         userRepository.save(user);
         myResponse.setMessage("Đăng ký thành công!");
@@ -182,5 +189,18 @@ public class TaiKhoanService {
         myResponse.setStatus(HttpStatus.OK.value());
         myResponse.setMessage("Thay đổi mật khẩu thành công!");
         return ResponseEntity.ok(myResponse);
+    }
+
+    public ResponseEntity<?> getInforById(String id) {
+       User user =  userRepository.findById(Integer.parseInt(id));
+        MyResponse myResponse = new MyResponse();
+       if(user!=null){
+           myResponse.setData(user);
+           myResponse.setStatus(200);
+           myResponse.setMessage("Lấy thành công id="+user.getId());
+       }else{
+           myResponse.setMessage("Lấy Không thành công!");
+       }
+       return ResponseEntity.ok(myResponse);
     }
 }
