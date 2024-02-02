@@ -15,5 +15,5 @@ public interface AnimeRepository extends JpaRepository<Anime, Integer> {
     public Page<Anime> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
     public Page<Anime> findAllByNameContainingIgnoreCaseOrEnglishNameContainingIgnoreCaseOrVietnamNameContainsIgnoreCase(String name, String englishName, String vietnamName, Pageable pageable);
     public Page<Anime> findAllByCategoryList_categoryName(String theLoai, Pageable pageable);
-
+    public int countAll();
 }
